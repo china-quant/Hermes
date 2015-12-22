@@ -39,7 +39,8 @@ module Accessor
               row = []
               row << values[0]
               values[1..-1].each do |v|
-                row << v.to_f
+                #row << v.to_f
+                row << v
               end
 
               rows << row

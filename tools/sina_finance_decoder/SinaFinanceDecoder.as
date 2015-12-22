@@ -58,6 +58,7 @@ package { // no special packages needed to organize this single file project
       }
 
       // output the header if necessary
+      // xhb: print the header
       // outputLine("time,price,avg price,volume");
 
       var date:Date = decoded[0].date;
@@ -79,7 +80,7 @@ package { // no special packages needed to organize this single file project
         var minute:int = minutes_from_sod % 60;
         var hourS:String = hour < 10 ? "0" + String(hour) : String(hour);
         var minuteS:String = minute < 10 ? "0" + String(minute) : String(minute);
-        var t:String = StringUtil.substitute("{0}/{1}/{2} {3}:{4}:00", date.fullYear, monthS, dayS, hourS, minuteS);
+        var t:String = StringUtil.substitute("{0}-{1}-{2} {3}:{4}:00", date.fullYear, monthS, dayS, hourS, minuteS);
         var line:String = StringUtil.substitute("{0},{1},{2},{3}", t, o.price, o.avg_price, o.volume);
 
         outputLine(line);
@@ -88,10 +89,18 @@ package { // no special packages needed to organize this single file project
       }
     }
 
-    public function splitInputString(raw:String) : Array
+    public function splitInputString(path:String) : Array
     {
       // sample raw data
       // var MLC_sh600845_2008_01="IC+PhBgMSTX1UBPGegxjXZZGIKihEtBoUllAF7i/AFOANoIRRALJwKcERzPQyOEdrg5Ach56KygoEoQeGEhZeOAEUVMizeBTsuvDoQoi5BRZ8BWzeEiiYB3SoBS2HmgSwJYPAEk50DFODXZSQhzIUEGhdzLQJQgd2AZ7qCcFOrAZJMgQ/NIWhwALQFI7a+IQiGsZ5hCExCWEFxkgNwAGcgM3A2uNwBSCFcIQDlhMYB2BBqALCGk99VPAJowZ4cgS4CnuDCUEUQyywCkwPwpvEPoiBuA+wDwDsbrMQaekwdHWQhIQIwwg99RLwlOPKQ8IQzggsECCCMH4SgEq9mHGsLkgEagdeweiggCLjBO9QCq9QYP ...
+      
+      //xhb change the raw data to a file path
+      var stream:FileStream = new FileStream();
+      var file:File = new File(path);
+      stream.open(file, FileMode.READ);
+      var raw:String = stream.readMultiByte(stream.bytesAvailable, 'utf-8');
+      stream.close;
+      //xhb end
 
       var raw_parts:Array = raw.split("\"");
       //outputLine(raw)
@@ -120,7 +129,7 @@ package { // no special packages needed to organize this single file project
       function onInvokeEvent(invocation:InvokeEvent):void {
         var args:Array = invocation.arguments;
         if (args.length != 0) {
-          var data_parts:Array = splitInputString(args[1]);
+          var data_parts:Array = splitInputString(args[0]);
 
           if (!data_parts) {
             outputLine("failed to split data into daily data");

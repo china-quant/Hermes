@@ -80,7 +80,7 @@ module Fetcher
 
       result = ''
       script = File.expand_path("../../tools/sina_finance_decoder/SinaFinanceDecoder.xml", __FILE__)
-      cmd = "adl #{script} -- `cat #{fname}` 2>&1"
+      cmd = "adl #{script} -- #{fname} 2>&1"
       result = `#{cmd}`
 
       `rm #{fname}`

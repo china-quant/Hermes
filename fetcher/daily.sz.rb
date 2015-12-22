@@ -30,13 +30,19 @@ module Fetcher
     end
 
     def url(code)
+=begin rdoc
+      xhb 更换163的数据源头
       today = Date.today
       y = today.year
       m = today.month
       d = today.day
-
       "http://ichart.finance.yahoo.com/table.csv?" +
       "s=#{code}.sz&d=#{m-1}&e=#{d}&f=#{y}&g=d&a=3&b=9&c=1990&ignore=.csv"
+=end
+      today = Date.today
+      ul = "http://quotes.money.163.com/service/chddata.html?code=1#{code.to_s}" + \
+      "&start=20000101&end=#{today.strftime('%Y%m%d')}&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"
+      return ul
     end
   end
 end

@@ -31,6 +31,8 @@ module Fetcher
     end
 
     def url(code)
+=begin rdoc
+      #xhb 使用163的数据，雅虎的数据太久没有跟新
       today = Date.today
       y = today.year
       m = today.month
@@ -38,10 +40,17 @@ module Fetcher
 
       "http://ichart.finance.yahoo.com/table.csv?" +
       "s=#{code}.ss&d=#{m-1}&e=#{d}&f=#{y}&g=d&a=3&b=9&c=1990&ignore=.csv"
+=end
+
+      today = Date.today
+      ul = "http://quotes.money.163.com/service/chddata.html?code=0#{code.to_s}" + \
+      "&start=20000101&end=#{today.strftime('%Y%m%d')}&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP"
+      return ul
     end
 
     def fetch_data(code)
-      text = `curl -s "#{url(code)}"`
+      text = `curl -s "#{url(code)}" | iconv -f gb2312 -t utf-8`
+      return text
     end
 
     def save_data(code, text)

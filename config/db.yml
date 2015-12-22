@@ -1,0 +1,7 @@
+development:
+  adapter: 'mysql2'
+  host: 'localhost'
+  database: 'satm_devel'
+  user: 'root'
+  password: '123456'
+
